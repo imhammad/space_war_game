@@ -54,11 +54,34 @@ class Sprite(turtle.Turtle):
             return True
         else:
             return False
-        
+
+
+class Player(Sprite):
+    def __init__(self, spriteshape, color, startx, starty):
+        Sprite.__init__(self, spriteshape, color, startx, starty)
+        self.shapesize(stretch_wid=0.6, stretch_len=1.2, outline=None)
+        self.speed = 4
+        self.lives = 3
+
+    def turn_left(self):
+        self.lt(45)
+
+    def turn_right(self):
+        self.rt(45)
+    
+    def accelerate(self):
+        self.speed += 1
+
+    def decelerate(self):
+        self.speed -= 1
+
+
+
 # Main Game Loop:
 
 while True:
     screen.update()
     time.sleep(0.03)
+
 
     
