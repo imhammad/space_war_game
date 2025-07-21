@@ -75,7 +75,63 @@ class Player(Sprite):
     def decelerate(self):
         self.speed -= 1
 
+#Enemies
+class Enemy(Sprite):
+    def __init__(self, spriteshape, color, startx, starty):
+        Sprite.__init__(self, spriteshape, color, startx, starty)
+        self.speed = 6
+        self.setheading(random.randint(0, 360))
 
+#Allies
+class Ally(Sprite):
+    def __init__(self, spriteshape, color, startx, starty):
+        Sprite.__init__(self, spriteshape, color, startx, starty)
+        self.speed = 12
+        self.setheading(random.randint(0, 360))
+
+    def move(self):
+        self.fd(self.speed)
+
+        # Border Control Reflect
+        if self.xcor() > 290:
+            self.setx(290)
+            self.lt(60)
+
+        if self.xcor() < -290:
+            self.setx(-290)
+            self.lt(60)
+
+        if self.ycor() > 290:
+            self.sety(290)
+            self.lt(60)
+
+        if self.ycor() < -290:
+            self.sety(-290)
+            self.lt(60)
+
+
+
+# Creating Sprites
+player = Player("triangle", "white", 0, 0)
+
+# ally = Ally("square", "blue", 100, 0)
+allies = []
+for i in range(6):
+    allies.append(Ally("square", "blue", 100, 0))
+
+# enemy = Enemy("circle", "red", -100, 0)
+enemies = []
+for i in range(6):
+    enemies.append(Enemy("circle", "red", -100, 0))
+
+# Connecting to Keyboard keys:
+
+turtle.onkey(player.turn_left, "Left")
+turtle.onkey(player.turn_right, "Right")
+turtle.onkey(player.accelerate, "Up")
+turtle.onkey(player.decelerate, "Down")
+# Missile to be added
+turtle.listen()
 
 # Main Game Loop:
 
@@ -83,5 +139,6 @@ while True:
     screen.update()
     time.sleep(0.03)
 
+    player.move()
 
     
