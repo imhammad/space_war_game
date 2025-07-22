@@ -109,10 +109,40 @@ class Ally(Sprite):
             self.sety(-290)
             self.lt(60)
 
+class Missile(Sprite):
+    def __init__(self, spriteshape, color, startx, starty):
+        Sprite.__init__(self, spriteshape, color, startx, starty)
+        self.shapesize(stretch_wid=0.2, stretch_len=0.4, outline=None)
+        self.speed = 20
+        self.status = "ready"
+        self.goto(-1000, 1000)
+
+    def fire(self):
+        if self.status == "ready":
+            self.goto(player.xcor(), player.ycor())
+            self.setheading(player.heading())
+            self.status = "firing"
+            winsound.PlaySound("audios/laser.wav", winsound.SND_ASYNC)
+
+    def move(self):
+        
+        if self.status == "ready":
+            self.goto(-1000, 1000)
+
+        if self.status == "firing":
+            self.fd(self.speed)
+
+        if self.xcor() < -290 or self.xcor() > 290 or \
+            self.ycor()< -290 or self.ycor() > 290:
+            self.goto(-1000, 1000)
+            self.status = "ready"
+
 
 
 # Creating Sprites
 player = Player("triangle", "white", 0, 0)
+# Missile
+missile = Missile("triangle", "yellow", 0, 0)
 
 # ally = Ally("square", "blue", 100, 0)
 allies = []
@@ -130,7 +160,7 @@ turtle.onkey(player.turn_left, "Left")
 turtle.onkey(player.turn_right, "Right")
 turtle.onkey(player.accelerate, "Up")
 turtle.onkey(player.decelerate, "Down")
-# Missile to be added
+turtle.onkey(missile.fire, "space")
 turtle.listen()
 
 # Main Game Loop:
@@ -140,5 +170,6 @@ while True:
     time.sleep(0.03)
 
     player.move()
+    missile.move()
 
     
