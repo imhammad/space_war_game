@@ -138,6 +138,44 @@ class Missile(Sprite):
             self.status = "ready"
 
 
+# Game Running Part!
+
+class Game():
+    def __init__(self):
+        self.level = 1
+        self.score = 0
+        self.state = "playing"
+        self.pen = turtle.Turtle()
+        self.lives = 3
+
+    def draw_border(self):
+        self.pen.speed(0)
+        self.pen.color("white")
+        self.pen.pensize(3)
+        self.pen.penup()
+        self.pen.goto(-300, 300)
+        self.pen.pendown()
+        for side in range(4):
+            self.pen.fd(600)
+            self.pen.rt(90)
+        self.pen.penup()
+        self.pen.ht()
+        self.pen.pendown()
+    
+    def show_status(self):
+        self.pen.undo()
+        msg = "Score: %s" %(self.score)
+        self.pen.penup()
+        self.pen.goto(-300, 310)
+        self.pen.write(msg, font=("Arial", 16, "normal"))
+
+game = Game()
+
+game.draw_border()
+
+game.show_status()
+
+
 
 # Creating Sprites
 player = Player("triangle", "white", 0, 0)
