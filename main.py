@@ -137,6 +137,29 @@ class Missile(Sprite):
             self.goto(-1000, 1000)
             self.status = "ready"
 
+# Collision Particles Effect
+
+class Particle(Sprite):
+    def __init__(self, spriteshape, color, startx, starty):
+        Sprite.__init__(self, spriteshape, color, startx, starty)
+        self.shapesize(stretch_wid=0.1, stretch_len=0.1, outline=None)
+        self.goto(-1000, -1000)
+        self.frame = 0
+
+    def explode(self, startx, starty):
+        self.goto(startx, starty)
+        self.setheading(random.randint(0, 360))
+        self.frame = 1
+
+    def move(self):
+        if self.frame > 0:
+            self.fd(10)
+            self.frame += 1
+
+        if self.frame > 20:
+            self.frame = 0
+            self.goto(-1000, -1000)
+
 
 # Game Running Part!
 
@@ -168,13 +191,13 @@ class Game():
         self.pen.penup()
         self.pen.goto(-300, 310)
         self.pen.write(msg, font=("Arial", 16, "normal"))
+        
 
 game = Game()
 
 game.draw_border()
 
 game.show_status()
-
 
 
 # Creating Sprites
@@ -191,6 +214,10 @@ for i in range(6):
 enemies = []
 for i in range(6):
     enemies.append(Enemy("circle", "red", -100, 0))
+
+particles = []
+for i in range(20):
+    particles.append(Particle("circle", "orange", 0, 0))
 
 # Connecting to Keyboard keys:
 
@@ -209,5 +236,7 @@ while True:
 
     player.move()
     missile.move()
+
+  
 
     
