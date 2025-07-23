@@ -237,6 +237,26 @@ while True:
     player.move()
     missile.move()
 
+    for enemy in enemies:
+        enemy.move()
+        # Checking for collision between the player and the enemies
+        if player.is_collision(enemy):
+            x = random.randint(-250, 250)
+            y = random.randint(-250, 250)
+            enemy.goto(x, y)
+        # Checking for collision between the missile and the enemies
+        if missile.is_collision(enemy):
+            x = random.randint(-250, 250)
+            y = random.randint(-250, 250)
+            enemy.goto(x, y)
+            missile.status = "ready"
+            winsound.PlaySound("audios/blast.wav", winsound.SND_ASYNC)
+            game.score += 10        # Increase Score
+            game.show_status()
+            # For Explosion
+            for particle in particles:
+                particle.explode(missile.xcor(), missile.ycor())
+
   
 
     
