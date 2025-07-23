@@ -79,14 +79,14 @@ class Player(Sprite):
 class Enemy(Sprite):
     def __init__(self, spriteshape, color, startx, starty):
         Sprite.__init__(self, spriteshape, color, startx, starty)
-        self.speed = 6
+        self.speed = 8
         self.setheading(random.randint(0, 360))
 
 #Allies
 class Ally(Sprite):
     def __init__(self, spriteshape, color, startx, starty):
         Sprite.__init__(self, spriteshape, color, startx, starty)
-        self.speed = 12
+        self.speed = 6
         self.setheading(random.randint(0, 360))
 
     def move(self):
@@ -256,6 +256,26 @@ while True:
             # For Explosion
             for particle in particles:
                 particle.explode(missile.xcor(), missile.ycor())
+    
+
+    for ally in allies:
+        ally.move()
+
+        # Checking for collision between the missile and the allies
+        if missile.is_collision(ally):
+            x = random.randint(-250, 250)
+            y = random.randint(-250, 250)
+            ally.goto(x, y)
+            missile.status = "ready"
+            winsound.PlaySound("audios/blast.wav", winsound.SND_ASYNC)
+            game.score -= 5         # Decrease Score
+            game.show_status()
+
+    for particle in particles:
+        particle.move()
+    
+
+delay = input("Press enter to finish. > ")
 
   
 
